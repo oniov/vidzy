@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vidzy</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #121212;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .video-container {
+      width: 100%;
+      max-width: 800px;
+      background: #1e1e1e;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+
+    video {
+      width: 100%;
+      border-radius: 1rem;
+      background: #000;
+    }
+
+    .controls {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    input[type="file"], input[type="text"], button {
+      padding: 0.8rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 1rem;
+    }
+
+    input[type="file"]::-webkit-file-upload-button {
+      background: #6200ee;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    button {
+      background: #03dac6;
+      color: #000;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vidzy</h1>
+
+  <div class="video-container">
+    <video id="videoPlayer" controls>
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="controls">
+      <input type="file" accept="video/*" onchange="loadLocalVideo(event)">
+      <input type="text" id="cdnUrl" placeholder="Paste CDN video link here">
+      <button onclick="loadCDNVideo()">Load CDN Video</button>
+    </div>
+  </div>
+
+  <script>
+    function loadLocalVideo(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const videoPlayer = document.getElementById('videoPlayer');
+        videoPlayer.src = URL.createObjectURL(file);
+        videoPlayer.load();
+        videoPlayer.play();
+      }
+    }
+
+    function loadCDNVideo() {
+      const url = document.getElementById('cdnUrl').value.trim();
+      if (url) {
+        const videoPlayer = document.getElementById('videoPlayer');
+        videoPlayer.src = url;
+        videoPlayer.load();
+        videoPlayer.play();
+      } else {
+        alert('Please enter a valid CDN URL.');
+      }
+    }
+  </script>
+</body>
+</html>
