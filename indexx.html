@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vidzy</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .video-container {
+      width: 100%;
+      max-width: 900px;
+      background: #181818;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+    }
+
+    video {
+      width: 100%;
+      background: #000;
+    }
+
+    .controls {
+      background: #202020;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .video-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    input[type="file"],
+    input[type="text"],
+    button,
+    select {
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      background: #ff0000;
+      color: white;
+      cursor: pointer;
+    }
+
+    .cdn-input {
+      display: flex;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    select {
+      background: #303030;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vidzy</h1>
+  <div class="video-container">
+    <video id="videoPlayer">
+      Your browser does not support the video tag.
+    </video>
+    <div class="controls">
+      <div class="video-controls">
+        <button onclick="togglePlay()">Play/Pause</button>
+        <button onclick="skip(-10)">-10s</button>
+        <button onclick="skip(10)">+10s</button>
+        <select onchange="changeSpeed(this.value)">
+          <option value="0.5">0.5x</option>
+          <option value="1" selected>1x</option>
+          <option value="1.5">1.5x</option>
+          <option value="2">2x</option>
+        </select>
+      </div>
+      <div class="video-controls">
+        <input type="file" accept="video/*" onchange="loadLocalVideo(event)" />
+        <div class="cdn-input">
+          <input type="text" id="cdnUrl" placeholder="Paste CDN video link" />
+          <button onclick="loadCDNVideo()">Load CDN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const videoPlayer = document.getElementById('videoPlayer');
+
+    function loadLocalVideo(event) {
+      const file = event.target.files[0];
+      if (file) {
+        videoPlayer.src = URL.createObjectURL(file);
+        videoPlayer.load();
+        videoPlayer.play();
+      }
+    }
+
+    function loadCDNVideo() {
+      const url = document.getElementById('cdnUrl').value.trim();
+      if (url) {
+        videoPlayer.src = url;
+        videoPlayer.load();
+        videoPlayer.play();
+      } else {
+        alert('Please enter a valid CDN URL.');
+      }
+    }
+
+    function togglePlay() {
+      if (videoPlayer.paused) {
+        videoPlayer.play();
+      } else {
+        videoPlayer.pause();
+      }
+    }
+
+    function skip(seconds) {
+      videoPlayer.currentTime += seconds;
+    }
+
+    function changeSpeed(speed) {
+      videoPlayer.playbackRate = parseFloat(speed);
+    }
+  </script>
+</body>
+</html>
